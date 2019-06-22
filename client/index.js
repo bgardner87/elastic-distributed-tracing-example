@@ -6,7 +6,7 @@ const Path = require('path');
 const init = async () => {
 
     const server = Hapi.server({
-        port: 3004,
+        port: 3003,
         host: 'localhost'
     });
 
