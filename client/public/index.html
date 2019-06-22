@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <style>
+            body{
+                background: -webkit-linear-gradient(left, #0F5481, #4AB1D9);
+                background: linear-gradient(to right, #0F5481, #4AB1D9);
+                font-family: 'Roboto', sans-serif;
+            }
+            h1 {
+                color: #fff;
+            }
+            h2 {
+                color: #fff;
+            }
+            table{
+                width:100%;
+                table-layout: fixed;
+            }
+            th {
+                padding: 20px 15px;
+                text-align: left;
+                font-weight: 500;
+                font-size: 16px;
+                color: #fff;
+                text-transform: uppercase;
+            }
+            td {
+                padding: 15px;
+                text-align: left;
+                vertical-align:middle;
+                font-weight: 300;
+                font-size: 14px;
+                color: #fff;
+                border-bottom: solid 1px rgba(255,255,255,0.1);
+            }
+        </style>
+        <script type="text/javascript">
+            function loadData() {
+                fetch('http://localhost:3000/orders', {
+                    headers: {
+                        'Authorization': 'demouser:demopass'
+                    }
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(response) {
+                    console.log(response);
+
+                    const tableBody = document.getElementById('tableBody');
+
+                    const fields = ['ordername', 'amount', 'tax', 'total'];
+
+                    for (const order of response) {
+                        const row = document.createElement('tr');
+
+                        for (const field of fields) {
+                            const column = document.createElement('td');
+                            column.innerHTML = order._source[field];
+
+                            row.appendChild(column);
+                        }
+                        
+                        
+                        tableBody.appendChild(row);
+                    }
+                });
+            }    
+        </script>
+    </head>
+    <body>
+        <h1>Order History</h1>
+        <div>
+            <button type="button" onclick="loadData()">Load Orders</button>
+        </div>
+        <div>
+            <h2>Orders</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
