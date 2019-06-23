@@ -1,5 +1,21 @@
 'use strict';
 
+const ElasticAPM = require('elastic-apm-node');
+
+const apm = ElasticAPM.start({
+    // Override service name from package.json
+    // Allowed characters: a-z, A-Z, 0-9, -, _, and space
+    serviceName: 'demo-gateway',
+  
+    // Use if APM Server requires a token
+    secretToken: 'CjnbD2bsszn2A4kZz2',
+  
+    // Set custom APM Server URL (default: http://localhost:8200)
+    serverUrl: 'https://dc663cdec89747d4873018cae96fb96f.apm.us-east-1.aws.cloud.es.io:443',
+    captureBody: 'all',
+    logLevel: 'info'
+});
+
 const Hapi = require('hapi');
 const Boom = require('boom');
 const webRequest = require('request-promise-native');
