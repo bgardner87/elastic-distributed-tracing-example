@@ -1,5 +1,27 @@
 'use strict';
 
+const ElasticAPM = require('elastic-apm-node');
+const util = require('util');
+
+const apm = ElasticAPM.start({
+    serviceName: 'demo-auth',
+  
+    secretToken: 'CjnbD2bsszn2A4kZz2',
+  
+    serverUrl: 'https://dc663cdec89747d4873018cae96fb96f.apm.us-east-1.aws.cloud.es.io:443',
+    captureBody: 'all',
+    logLevel: 'info',
+    asyncHooks: false // this is for knex due to open issue with instrumenting knex and async hooks.
+    // logger: {
+    //     trace: (message, ...params) => console.log(util.format(message, JSON.stringify(params))),
+    //     debug: (message, ...params) => console.log(util.format(message, JSON.stringify(params))),
+    //     info: (message, ...params) => console.log(util.format(message, JSON.stringify(params))),
+    //     warn: (message, ...params) => console.log(util.format(message, JSON.stringify(params))),
+    //     error: (message, ...params) => console.log(util.format(message, JSON.stringify(params))),
+    //     fatal: (message, ...params) => console.log(util.format(message, JSON.stringify(params)))
+    // }
+});
+
 const Hapi = require('hapi');
 const Boom = require('boom');
 const Knex = require('knex');
@@ -48,6 +70,7 @@ const init = async () => {
                 return Boom.notFound('User not found');
             }
 
+            console.log('user is authorized');
             return {authorized: result[0].password === password};
         }
     });

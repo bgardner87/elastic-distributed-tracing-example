@@ -11,6 +11,7 @@
   "dependencies": {
     "boom": "^7.3.0",
     "delay": "^4.3.0",
+    "elastic-apm-node": "^2.11.6",
     "hapi": "^18.1.0",
     "knex": "^0.17.6",
     "pg": "^7.11.0"
