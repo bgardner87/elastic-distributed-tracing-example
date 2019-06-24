@@ -34,15 +34,27 @@
                 border-bottom: solid 1px rgba(255,255,255,0.1);
             }
         </style>
+        <script src="/elastic-apm-rum.umd.min.js"></script>
+        <script>
+          elasticApm.init({
+            serviceName: 'demo-client',
+            serverUrl: 'https://dc663cdec89747d4873018cae96fb96f.apm.us-east-1.aws.cloud.es.io:443',
+            distributedTracingOrigins: ['http://localhost:3000', 'http://localhost:3003'],
+            pageLoadTransactionName: 'Orders Page'
+          })
+        </script>
         <script type="text/javascript">
             function loadData() {
+                const transaction = elasticApm.startTransaction('Get Orders', 'Order');
+                const requestSpan = transaction.startSpan('Orders HTTP Request');
                 fetch('http://localhost:3000/orders', {
                     headers: {
                         'Authorization': 'demouser:demopass'
                     }
-                }).then(function(response) {
+                }).then((response) => {
+                    requestSpan.end();
                     return response.json();
-                }).then(function(response) {
+                }).then((response) => {
                     console.log(response);
 
                     const tableBody = document.getElementById('tableBody');
@@ -62,6 +74,10 @@
                         
                         tableBody.appendChild(row);
                     }
+
+                    transaction.end();
+                }).catch((err) => {
+                    transaction.end();
                 });
             }    
         </script>

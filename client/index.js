@@ -14,7 +14,7 @@ const init = async () => {
 
     server.route({
         method: 'GET',
-        path:'/',
+        path: '/',
         handler: (request, h) => {
 
             return h.file('./client/public/index.html');
@@ -29,6 +29,17 @@ const init = async () => {
             return 'hello';
         }
     });
+
+    server.route({
+        method: 'GET',
+        path: '/elastic-apm-rum.umd.min.js',
+        handler: (request, h) => {
+
+            return h.file('./public/elastic-apm-rum.umd.min.js');
+        }
+    });
+
+    
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

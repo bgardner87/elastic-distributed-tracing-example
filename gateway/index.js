@@ -4,9 +4,9 @@ const ElasticAPM = require('elastic-apm-node');
 
 const apm = ElasticAPM.start({
     serviceName: 'demo-gateway',
-  
+
     secretToken: 'CjnbD2bsszn2A4kZz2',
-  
+
     serverUrl: 'https://dc663cdec89747d4873018cae96fb96f.apm.us-east-1.aws.cloud.es.io:443',
     captureBody: 'all',
     logLevel: 'info'
@@ -25,7 +25,7 @@ const init = async () => {
 
     server.route({
         method: 'GET',
-        path:'/',
+        path: '/',
         handler: (request, h) => {
 
             return 'hello';
@@ -54,7 +54,7 @@ const init = async () => {
 
     server.route({
         method: 'GET',
-        path:'/orders',
+        path: '/orders',
         options: {
             cors: true
         },
@@ -85,7 +85,7 @@ const init = async () => {
                 console.log(err.message);
                 return Boom.unauthorized('User unauthorized');
             }
-            
+
             const ordersHttpOptions = {
                 uri: 'http://elastic-apm-demo-order-service:3002/orders',
                 method: 'GET',
