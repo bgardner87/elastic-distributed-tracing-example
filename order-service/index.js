@@ -2,14 +2,14 @@
 
 const Hapi = require('hapi');
 const Elasticsearch = require('elasticsearch');
-const config = require('../config');
+const config = require('./config');
 
 
 const init = async () => {
 
     const server = Hapi.server({
         port: 3002,
-        host: 'localhost'
+        host: '0.0.0.0'
     });
 
     const elasticClient = new Elasticsearch.Client({...config.elasticsearch});

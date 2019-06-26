@@ -1,0 +1,68 @@
+
+version: '3'
+
+services:
+  postgres:
+    container_name: "elastic-apm-demo-postgres"
+    build:
+      context: ./auth-service/db
+      dockerfile: ./Dockerfile
+    ports:
+      - "54321:5432"
+    networks:
+      - demo
+  gateway:
+    container_name: "elastic-apm-demo-gateway"
+    build:
+      context: ./gateway
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+    networks:
+      - demo
+    command: ["gateway/start.sh"]
+  auth-service:
+    container_name: "elastic-apm-demo-auth-service"
+    build:
+      context: ./auth-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+    networks:
+      - demo
+    command: ["auth-service/start.sh"]
+  order-service:
+    container_name: "elastic-apm-demo-order-service"
+    build:
+      context: ./order-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+    networks:
+      - demo
+    command: ["order-service/start.sh"]
+  client:
+    container_name: "elastic-apm-demo-client"
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    ports:
+      - "3003:3003"
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+    networks:
+      - demo
+    command: ["client/start.sh"]
+
+networks:
+  demo:

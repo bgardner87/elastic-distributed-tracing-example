@@ -8,7 +8,7 @@ const init = async () => {
 
     const server = Hapi.server({
         port: 3000,
-        host: 'localhost'
+        host: '0.0.0.0'
     });
 
     server.route({
@@ -17,6 +17,26 @@ const init = async () => {
         handler: (request, h) => {
 
             return 'hello';
+        }
+    });
+
+    server.route({
+        method: 'OPTIONS',
+        path: '/{p*}',
+        handler: (req, h) => {
+            const response = h.response('success');
+
+            const origin = req.headers.origin;
+            response.header('Access-Control-Allow-Origin', origin);
+
+            response.type('text/plain');
+            response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            response.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, elastic-apm-traceparent');
+            return response;
+        },
+        options: {
+            auth: false,
+            cors: false
         }
     });
 
@@ -30,7 +50,7 @@ const init = async () => {
             console.log('Orders request received');
 
             const authHttpOptions = {
-                uri: 'http://localhost:3001/auth',
+                uri: 'http://elastic-apm-demo-auth-service:3001/auth',
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +75,7 @@ const init = async () => {
             }
             
             const ordersHttpOptions = {
-                uri: 'http://localhost:3002/orders',
+                uri: 'http://elastic-apm-demo-order-service:3002/orders',
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

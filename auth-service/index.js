@@ -3,13 +3,13 @@
 const Hapi = require('hapi');
 const Boom = require('boom');
 const Knex = require('knex');
-const knexConfig = require('../db/knexfile');
+const knexConfig = require('./db/knexfile');
 
 const init = async () => {
 
     const server = Hapi.server({
         port: 3001,
-        host: 'localhost'
+        host: '0.0.0.0'
     });
 
     const knex = Knex(knexConfig);

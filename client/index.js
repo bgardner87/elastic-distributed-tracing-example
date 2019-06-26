@@ -7,7 +7,7 @@ const init = async () => {
 
     const server = Hapi.server({
         port: 3003,
-        host: 'localhost'
+        host: '0.0.0.0'
     });
 
     await server.register(require('inert'));
@@ -17,11 +17,18 @@ const init = async () => {
         path:'/',
         handler: (request, h) => {
 
-            return h.file('./public/index.html');
+            return h.file('./client/public/index.html');
         }
     });
 
-    
+    server.route({
+        method: 'GET',
+        path:'/test',
+        handler: (request, h) => {
+
+            return 'hello';
+        }
+    });
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
