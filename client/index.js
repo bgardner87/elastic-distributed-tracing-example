@@ -35,7 +35,7 @@ const init = async () => {
         path: '/elastic-apm-rum.umd.min.js',
         handler: (request, h) => {
 
-            return h.file('./public/elastic-apm-rum.umd.min.js');
+            return h.file('./client/public/elastic-apm-rum.umd.min.js');
         }
     });
 
